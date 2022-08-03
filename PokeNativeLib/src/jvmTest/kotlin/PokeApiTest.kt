@@ -1,10 +1,16 @@
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class PokeApiTest {
 
+    init {
+        Logger.loggingFunction = { println("\t$it") }
+    }
     private fun readDittoJson(): String? {
         return PokeApiTest::class.java.getResource("/ditto.json")?.readText()
     }
@@ -34,6 +40,7 @@ class PokeApiTest {
 
     @Test
     fun testSetup() {
+        println("Test: testSetup")
         readDittoJson().let {
             assertNotNull(it)
             assertTrue { it.contains("ditto") }
@@ -47,19 +54,28 @@ class PokeApiTest {
 
     @Test
     fun testDitto() {
+        println("Test: testDitto")
         val pokemonName = "ditto"
         api.findPokemon(pokemonName).let {
             assertNotNull(it, "Pokemon should not be 'null'")
             assertEquals(pokemonName, it.name, "Name is not correct")
+            println(it.toString())
         }
     }
 
     @Test
     fun testPikachu() {
+        println("Test: testPikachu")
         val pokemonName = "pikachu"
         api.findPokemon(pokemonName).let {
             assertNotNull(it, "Pokemon should not be 'null'")
             assertEquals(pokemonName, it.name, "Name is not correct")
+            println(it.toString())
         }
+    }
+
+    @AfterTest
+    fun afterTests(){
+        println()
     }
 }

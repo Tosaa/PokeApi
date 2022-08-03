@@ -1,13 +1,14 @@
-@kotlinx.serialization.Serializable
-data class Pokemon(val name: String,
-                   val height: Int,
-                   val weight: Int,
-    /*val types: List<TypeWrapper> = emptyList()*/
+import serializable.Wrapper
+
+data class Pokemon constructor(
+    val name: String,
+    val height: Int,
+    val weight: Int,
+    val types: List<String>,
 ) {
-
-    @kotlinx.serialization.Serializable
-    data class TypeWrapper(val slot: Int, val type: Type)
-
-    @kotlinx.serialization.Serializable
-    data class Type(val name: String, val url: String)
+    companion object {
+        fun byWrapper(wrapper: Wrapper.Pokemon): Pokemon {
+            return Pokemon(wrapper.name, wrapper.height, wrapper.weight, wrapper.types.map { it.type.name }.toList())
+        }
+    }
 }
