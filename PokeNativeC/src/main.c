@@ -94,8 +94,8 @@ libpokeapi_kref_PokeApi set_up_api(libpokeapi_ExportedSymbols *lib) {
 void *searchForPokemon(libpokeapi_ExportedSymbols *lib, libpokeapi_kref_PokeApi api, char *pokemon_name) {
     printf("MAIN\t find Pokemon: %s\n", pokemon_name);
     libpokeapi_kref_Pokemon pokemon_instance = lib->kotlin.root.PokeApi.findPokemon(api, pokemon_name);
-    printf("MAIN\t get Name of pokemon: ");
-    const char *name = lib->kotlin.root.Pokemon.get_name(pokemon_instance);
+    printf("MAIN\t Pokemon: ");
+    const char *name = lib->kotlin.root.Pokemon.toString(pokemon_instance);
     printf("%s\n", name);
 }
 
