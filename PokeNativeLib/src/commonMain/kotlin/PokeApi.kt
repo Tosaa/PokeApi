@@ -23,7 +23,7 @@ class PokeApi {
             jsonDecoder.decodeFromString(json)
         } catch (e: Exception) {
             Logger.d { "Exception: \n${e.printStackTrace()}" }
-            Pokemon("UNKNOWN")
+            Pokemon("UNKNOWN",0,0)
         }
     }
 }
