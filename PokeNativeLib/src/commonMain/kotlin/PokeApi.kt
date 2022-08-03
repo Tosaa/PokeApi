@@ -1,16 +1,5 @@
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.Json.Default.decodeFromString
-
-/**
- * Class to execute CURL-Requests and to return its response
- */
-expect class CurlExecutor {
-    fun invoke(request: String): String?
-}
-
-@kotlinx.serialization.Serializable
-data class Pokemon(val name: String)
 
 class PokeApi {
     private val jsonDecoder = Json { ignoreUnknownKeys = true }
