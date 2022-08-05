@@ -1,3 +1,6 @@
+import redtoss.poke.lib.CurlExecutor
+import redtoss.poke.lib.Logger
+import redtoss.poke.lib.PokeApi
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

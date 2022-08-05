@@ -20,10 +20,10 @@ Thankfully it has complete multiplatform support. :+1:
 
 #### Logging
 Since the targets do not share code for Logging, the Logging functionality has to be injected.  
-The Logger object will use the provided Logging function and logs any information within the Library through it.
+The ross.poke.lib.Logger object will use the provided Logging function and logs any information within the Library through it.
 
-#### Fetching Data (using the CurlExecutor)
-For executing Curl Requests, the CurlExecutor is used. It provides a function that accepts a `URL` (as String / Char Array for KotlinNative) and returns the Response (String/CharArray).
+#### Fetching Data (using the ross.poke.lib.CurlExecutor)
+For executing Curl Requests, the ross.poke.lib.CurlExecutor is used. It provides a function that accepts a `URL` (as String / Char Array for KotlinNative) and returns the Response (String/CharArray).
 Since the targets do not share code for sending CURL-Requests, the functionality has to be injected.
 
 In a simple manner, one could say, the Library does only provide URLs' to use the PokeApi.
@@ -32,4 +32,4 @@ In a simple manner, one could say, the Library does only provide URLs' to use th
 To enable any user to cache the results of requests, a caching implementation can be passed to the Library.
 
 ### Kotlin Native
-To replace the [Loggers log](https://github.com/Tosaa/PokeApi/blob/master/PokeNativeLib/src/nativeMain/kotlin/Logger.kt) function and the function [to curl information](https://github.com/Tosaa/PokeApi/blob/master/PokeNativeLib/src/nativeMain/kotlin/CurlExecutor.kt), KotlinNatives `Pointer<CFunction<...>>` is used.
+To replace the [Loggers log](https://github.com/Tosaa/PokeApi/blob/master/PokeNativeLib/src/nativeMain/kotlin/ross.poke.lib.Logger.kt) function and the function [to curl information](https://github.com/Tosaa/PokeApi/blob/master/PokeNativeLib/src/nativeMain/kotlin/ross.poke.lib.CurlExecutor.kt), KotlinNatives `Pointer<CFunction<...>>` is used.

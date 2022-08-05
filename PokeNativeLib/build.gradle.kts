@@ -3,6 +3,7 @@ import java.awt.GridBagConstraints.BOTH
 plugins {
     kotlin("multiplatform") version "1.7.10"
     kotlin("plugin.serialization") version "1.7.10"
+    id("maven-publish")
 }
 
 group = "redtoss.libraries.native.pokemon"
