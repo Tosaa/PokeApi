@@ -1,3 +1,5 @@
+package redtoss.poke.lib
+
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointer

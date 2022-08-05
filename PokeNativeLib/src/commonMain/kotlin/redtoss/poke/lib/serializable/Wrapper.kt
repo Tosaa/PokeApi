@@ -1,6 +1,6 @@
-package serializable
+package redtoss.poke.lib.serializable
 
-class Wrapper {
+internal class Wrapper {
     @kotlinx.serialization.Serializable
     data class Pokemon(
         val name: String,

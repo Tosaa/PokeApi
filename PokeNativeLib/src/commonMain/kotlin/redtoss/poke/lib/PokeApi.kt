@@ -1,10 +1,10 @@
+package redtoss.poke.lib
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import serializable.Wrapper
-import kotlin.reflect.typeOf
+import redtoss.poke.lib.serializable.Wrapper
 
-class PokeApi {
+public class PokeApi {
     private val jsonDecoder = Json { ignoreUnknownKeys = true }
     private var curlExecutor: CurlExecutor? = null
 

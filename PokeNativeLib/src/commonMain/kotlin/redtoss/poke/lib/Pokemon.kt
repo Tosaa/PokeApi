@@ -1,13 +1,15 @@
-import serializable.Wrapper
+package redtoss.poke.lib
 
-data class Pokemon constructor(
+import redtoss.poke.lib.serializable.Wrapper
+
+public data class Pokemon constructor(
     val name: String,
     val height: Int,
     val weight: Int,
     val types: List<String>,
 ) {
     companion object {
-        fun byWrapper(wrapper: Wrapper.Pokemon): Pokemon {
+        internal fun byWrapper(wrapper: Wrapper.Pokemon): Pokemon {
             return Pokemon(wrapper.name, wrapper.height, wrapper.weight, wrapper.types.map { it.type.name }.toList())
         }
     }

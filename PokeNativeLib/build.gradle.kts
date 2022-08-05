@@ -1,14 +1,16 @@
-import java.awt.GridBagConstraints.BOTH
-
-plugins {
-    kotlin("multiplatform") version "1.7.10"
-    kotlin("plugin.serialization") version "1.7.10"
-}
 
 group = "redtoss.libraries.native.pokemon"
 version = "1.0-SNAPSHOT"
 repositories {
+    google()
     mavenCentral()
+}
+
+plugins {
+    kotlin("multiplatform") version "1.7.10"
+    kotlin("plugin.serialization") version "1.7.10"
+    id("com.android.library") apply false
+    id("maven-publish")
 }
 
 kotlin {
@@ -28,7 +30,6 @@ kotlin {
             }
         }
     }
-
 
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
@@ -52,11 +53,17 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val jvmMain by getting
+        val jvmMain by getting {
+            dependsOn(commonMain)
+        }
         val jvmTest by getting
-        val jsMain by getting
+        val jsMain by getting {
+            dependsOn(commonMain)
+        }
         val jsTest by getting
-        val nativeMain by getting
+        val nativeMain by getting {
+            dependsOn(commonMain)
+        }
         val nativeTest by getting
     }
 
