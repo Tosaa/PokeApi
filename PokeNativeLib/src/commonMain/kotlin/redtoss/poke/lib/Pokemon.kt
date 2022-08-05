@@ -1,5 +1,4 @@
 package redtoss.poke.lib
-
 import redtoss.poke.lib.serializable.Wrapper
 
 public data class Pokemon constructor(

@@ -1,16 +1,15 @@
-
-group = "redtoss.libraries.native.pokemon"
-version = "1.0-SNAPSHOT"
-repositories {
-    google()
-    mavenCentral()
-}
+import java.awt.GridBagConstraints.BOTH
 
 plugins {
     kotlin("multiplatform") version "1.7.10"
     kotlin("plugin.serialization") version "1.7.10"
-    id("com.android.library") apply false
     id("maven-publish")
+}
+
+group = "redtoss.libraries.native.pokemon"
+version = "1.0-SNAPSHOT"
+repositories {
+    mavenCentral()
 }
 
 kotlin {
@@ -30,6 +29,7 @@ kotlin {
             }
         }
     }
+
 
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
@@ -53,17 +53,11 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val jvmMain by getting {
-            dependsOn(commonMain)
-        }
+        val jvmMain by getting
         val jvmTest by getting
-        val jsMain by getting {
-            dependsOn(commonMain)
-        }
+        val jsMain by getting
         val jsTest by getting
-        val nativeMain by getting {
-            dependsOn(commonMain)
-        }
+        val nativeMain by getting
         val nativeTest by getting
     }
 
