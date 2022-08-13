@@ -1,5 +1,5 @@
 package redtoss.app.poke.ui.common
 
 expect class PokeViewModel() {
-    fun findPokemon(name: String): Pokemon?
+    fun findPokemon(name: String): Result<Pokemon>
 }

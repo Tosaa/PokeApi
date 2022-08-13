@@ -21,7 +21,16 @@ fun App() {
     val pokeViewModel = PokeViewModel()
     val searchResult: MutableState<Pokemon?> = mutableStateOf(Pokemon())
     Column(Modifier.fillMaxWidth()) {
-        Searchbar(viewModel = pokeViewModel) { searchResult.value = it }
+        Searchbar(viewModel = pokeViewModel) {
+            searchResult.value = it.getOrDefault(
+                Pokemon(
+                    "UNKNOWN",
+                    -1,
+                    -1,
+                    emptyList()
+                )
+            )
+        }
         Row {
             PokemonResult(searchResult, modifier = Modifier.weight(1f))
             Spacer(Modifier.weight(1f))
@@ -57,7 +66,7 @@ fun PokemonResult(pokemon: MutableState<Pokemon?>, modifier: Modifier? = null) {
 }
 
 @Composable
-fun Searchbar(viewModel: PokeViewModel, onSearchResult: (Pokemon?) -> Unit) {
+fun Searchbar(viewModel: PokeViewModel, onSearchResult: (Result<Pokemon>) -> Unit) {
     val searchTextField: MutableState<String> = remember { mutableStateOf("") }
     Row(Modifier.fillMaxWidth()) {
         TextField(
@@ -65,8 +74,8 @@ fun Searchbar(viewModel: PokeViewModel, onSearchResult: (Pokemon?) -> Unit) {
             onValueChange = { pokemonName ->
                 searchTextField.value = pokemonName
                 if (pokemonName.contains("\n")) {
-                    viewModel.findPokemon(pokemonName.trim()).let { pokemon ->
-                        onSearchResult.invoke(pokemon)
+                    viewModel.findPokemon(pokemonName.trim()).let { pokemonResult ->
+                        onSearchResult.invoke(pokemonResult)
                     }
                     searchTextField.value = ""
                 }
@@ -75,8 +84,8 @@ fun Searchbar(viewModel: PokeViewModel, onSearchResult: (Pokemon?) -> Unit) {
         )
         Button(
             onClick = {
-                viewModel.findPokemon(searchTextField.value).let { pokemon ->
-                    onSearchResult.invoke(pokemon)
+                viewModel.findPokemon(searchTextField.value).let { pokemonResult ->
+                    onSearchResult.invoke(pokemonResult)
                 }
                 searchTextField.value = ""
             },
