@@ -1,7 +1,7 @@
 package redtoss.poke.lib
 
 actual class CurlExecutor {
-    actual fun invoke(request: String): String? {
+    actual suspend fun invoke(request: String): String? {
         return request
     }
 }

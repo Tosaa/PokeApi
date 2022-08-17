@@ -40,17 +40,26 @@ kotlin {
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
 
+    sourceSets.all{
+        languageSettings{
+            optIn("kotlin.Experimental")
+            optIn("kotlin.ExperimentalMultiplatform")
+            optIn("kotlin.ExperimentalStdlibApi")
+        }
+    }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
                 val serialization_version = "1.4.0-RC"
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
             }
         }
         val jvmMain by getting

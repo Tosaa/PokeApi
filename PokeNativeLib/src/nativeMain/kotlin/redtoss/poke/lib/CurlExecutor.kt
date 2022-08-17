@@ -10,8 +10,9 @@ import kotlinx.cinterop.toKStringFromUtf8
 
 actual class CurlExecutor {
     var function: CPointer<CFunction<(CValuesRef<ByteVar>) -> CPointer<ByteVar>?>>? = null
-    actual fun invoke(request: String): String? {
+    actual suspend fun invoke(request: String): String? {
         return function?.invoke(request.cstr)?.toKStringFromUtf8()
     }
+
 
 }

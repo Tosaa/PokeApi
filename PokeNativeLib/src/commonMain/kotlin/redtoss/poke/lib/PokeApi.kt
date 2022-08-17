@@ -1,4 +1,5 @@
 package redtoss.poke.lib
+
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -13,11 +14,12 @@ public class PokeApi {
         curlExecutor = executor
     }
 
-    public fun findPokemon(name: String): Pokemon? {
-        Logger.d { "findPokemon(): name: '$name'" }
-        val url = "https://pokeapi.co/api/v2/pokemon/$name"
-
-        return curlExecutor?.invoke(url)?.let { jsonToPokemon(it) }
+    // Making findPokemon a `suspend fun`, gives the callee the force
+    // to select the coroutine on which the request should be made.
+    public suspend fun findPokemon(name: String): Pokemon? {
+            Logger.d { "findPokemon(): name: '$name'" }
+            val url = "https://pokeapi.co/api/v2/pokemon/$name"
+            return curlExecutor?.invoke(url)?.let { jsonToPokemon(it) }
     }
 
     private fun jsonToPokemon(json: String): Pokemon {
