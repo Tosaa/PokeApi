@@ -27,6 +27,8 @@ kotlin {
                 api("redtoss.libraries.native.pokemon:PokeNativeLib:1.0-SNAPSHOT")
                 // Somehow the Library is only available to androidMain and desktopMain, but not to commonMain
 
+                // Logging Library
+                api("org.lighthousegames:logging:1.2.0")
             }
         }
         val commonTest by getting {

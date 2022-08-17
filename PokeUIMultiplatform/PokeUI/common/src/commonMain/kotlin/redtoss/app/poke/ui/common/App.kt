@@ -15,24 +15,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.plus
 
 @Composable
 fun App() {
     val pokeViewModel = PokeViewModel()
-    val searchResult: MutableState<Pokemon?> = mutableStateOf(Pokemon())
     Column(Modifier.fillMaxWidth()) {
-        Searchbar(viewModel = pokeViewModel) {
-            searchResult.value = it.getOrDefault(
-                Pokemon(
-                    "UNKNOWN",
-                    -1,
-                    -1,
-                    emptyList()
-                )
-            )
-        }
+        Searchbar(viewModel = pokeViewModel)
         Row {
-            PokemonResult(searchResult, modifier = Modifier.weight(1f))
+            PokemonResult(pokeViewModel.latestSearchedPokemon, modifier = Modifier.weight(1f))
             Spacer(Modifier.weight(1f))
         }
     }
@@ -66,7 +59,7 @@ fun PokemonResult(pokemon: MutableState<Pokemon?>, modifier: Modifier? = null) {
 }
 
 @Composable
-fun Searchbar(viewModel: PokeViewModel, onSearchResult: (Result<Pokemon>) -> Unit) {
+fun Searchbar(viewModel: PokeViewModel) {
     val searchTextField: MutableState<String> = remember { mutableStateOf("") }
     Row(Modifier.fillMaxWidth()) {
         TextField(
@@ -74,9 +67,7 @@ fun Searchbar(viewModel: PokeViewModel, onSearchResult: (Result<Pokemon>) -> Uni
             onValueChange = { pokemonName ->
                 searchTextField.value = pokemonName
                 if (pokemonName.contains("\n")) {
-                    viewModel.findPokemon(pokemonName.trim()).let { pokemonResult ->
-                        onSearchResult.invoke(pokemonResult)
-                    }
+                    viewModel.findPokemon(pokemonName.trim())
                     searchTextField.value = ""
                 }
             },
@@ -84,9 +75,7 @@ fun Searchbar(viewModel: PokeViewModel, onSearchResult: (Result<Pokemon>) -> Uni
         )
         Button(
             onClick = {
-                viewModel.findPokemon(searchTextField.value).let { pokemonResult ->
-                    onSearchResult.invoke(pokemonResult)
-                }
+                viewModel.findPokemon(searchTextField.value)
                 searchTextField.value = ""
             },
             modifier = Modifier.weight(1f)
