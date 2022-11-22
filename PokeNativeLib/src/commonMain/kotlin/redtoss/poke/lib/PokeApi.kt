@@ -16,10 +16,11 @@ public class PokeApi {
 
     // Making findPokemon a `suspend fun`, gives the callee the force
     // to select the coroutine on which the request should be made.
+    // suspend functions are not compiled for native-Code.
     public suspend fun findPokemon(name: String): Pokemon? {
-            Logger.d { "findPokemon(): name: '$name'" }
-            val url = "https://pokeapi.co/api/v2/pokemon/$name"
-            return curlExecutor?.invoke(url)?.let { jsonToPokemon(it) }
+        Logger.d { "findPokemon(): name: '$name'" }
+        val url = "https://pokeapi.co/api/v2/pokemon/$name"
+        return curlExecutor?.invoke(url)?.let { jsonToPokemon(it) }
     }
 
     private fun jsonToPokemon(json: String): Pokemon {

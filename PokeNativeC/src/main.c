@@ -93,6 +93,7 @@ libpokeapi_kref_redtoss_poke_lib_PokeApi  set_up_api(libpokeapi_ExportedSymbols 
  */
 void *searchForPokemon(libpokeapi_ExportedSymbols *lib, libpokeapi_kref_redtoss_poke_lib_PokeApi api, char *pokemon_name) {
     printf("MAIN\t find Pokemon: %s\n", pokemon_name);
+
     libpokeapi_kref_redtoss_poke_lib_Pokemon pokemon_instance = lib->kotlin.root.redtoss.poke.lib.PokeApi.findPokemon(api, pokemon_name);
     printf("MAIN\t Pokemon: ");
     const char *name = lib->kotlin.root.redtoss.poke.lib.Pokemon.toString(pokemon_instance);
