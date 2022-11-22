@@ -15,13 +15,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.plus
+import redtoss.poke.lib.CurlExecutor
+import redtoss.poke.lib.PokeApi
+import redtoss.poke.lib.Pokemon
 
+expect fun getCurlExecutor():CurlExecutor
+expect fun initPlatform()
 @Composable
 fun App() {
-    val pokeViewModel = PokeViewModel()
+    initPlatform()
+    val pokeApi = PokeApi()
+    val curlExecutor = getCurlExecutor()
+    pokeApi.setCurlExecutor(curlExecutor)
+    val pokeViewModel = PokeViewModel(pokeApi)
     Column(Modifier.fillMaxWidth()) {
         Searchbar(viewModel = pokeViewModel)
         Row {

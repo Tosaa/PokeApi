@@ -11,23 +11,11 @@ import java.io.InputStream
 import java.net.URL
 import java.util.concurrent.Executor
 
-actual class PokeApi {
-    private val pokeApi = redtoss.poke.lib.PokeApi()
-    private val apiLogger = logging("PokeApiLib")
-    private val logger = logging()
-    private lateinit var executor: Executor
-
-    init {
-        Logger.loggingFunction = { log ->
-            apiLogger.d { log }
-        }
-
-    }
-
-    private val curlExecutor = object : CurlExecutor() {
+actual fun getCurlExecutor(): CurlExecutor {
+    val logger = Logger
+    val curlExecutor = object : CurlExecutor() {
         override suspend fun invoke(request: String): String? {
             logger.d { "received Request: $request" }
-
             val urlRequest = URL(request)
             return try {
                 val openURLConnection = urlRequest.openConnection()
@@ -36,26 +24,15 @@ actual class PokeApi {
                 logger.d { "Received Response: $response" }
                 response
             } catch (e: Exception) {
-                logger.e(e) { "Could not openConnection() for url" }
+                logger.d { "Could not openConnection() for url: Exception : $e" }
                 null
             }
         }
     }
+    return curlExecutor
+}
 
-    init {
-        pokeApi.setCurlExecutor(curlExecutor)
-    }
-
-    actual suspend fun findPokemonByName(name: String): Result<Pokemon> {
-        val fetchedPokemon =
-            pokeApi.findPokemon(name) ?: return Result.failure(Exception("API found no result for Pokemon: '$name'"))
-        return Result.success(
-            Pokemon(
-                fetchedPokemon.name,
-                fetchedPokemon.height,
-                fetchedPokemon.weight,
-                fetchedPokemon.types
-            )
-        )
-    }
+actual fun initPlatform() {
+    val androidLogger = logging("PokeApiLib")
+    Logger.loggingFunction = { message -> androidLogger.d { "Android(jvm): $message" } }
 }
