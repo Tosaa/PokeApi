@@ -1,0 +1,59 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+title Exported libraries
+
+package redtoss.poke.lib{
+
+    note top of common
+        common can be integrated by any other 'common' module
+    end note
+
+    package common{
+
+        class PokeApi{
+        }
+        class Pokemon{
+        }
+        interface Logger
+        interface CurlExecutor
+    }
+
+    note top of js
+        js can be integrated by any js based module
+    end note
+
+    package js{
+        class "PokeApi" as js_pokeApi
+        class "Pokemon" as js_pokemon
+        class "CurlExecutor" as js_curl
+        class "Logger" as js_logger
+    }
+
+    note top of jvm
+        jvm can be integrated by any jvm based module
+        e.g: Desktop (Compose Multiplatform), Android, Spring Backends ...
+    end note
+
+    package jvm{
+        class "PokeApi" as jvm_pokeApi
+        class "Pokemon" as jvm_pokemon
+        class "CurlExecutor" as jvm_curl
+        class "Logger" as jvm_logger
+    }
+
+    note top of native
+        native can be integrated in any c library or Kotlin native project
+        !be aware that native libraries still architecture dependend!
+    end note
+
+    package native{
+        class "PokeApi" as native_pokeApi
+        class "Pokemon" as native_pokemon
+        class "CurlExecutor" as native_curl
+        class "Logger" as native_logger
+    }
+
+}
+
+@enduml
