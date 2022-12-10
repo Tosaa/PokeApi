@@ -73,31 +73,37 @@ void *logAPI(char *input) {
 /**
  * Method that is used to setup the libpokeapi
  */
-libpokeapi_kref_redtoss_poke_lib_PokeApi  set_up_api(libpokeapi_ExportedSymbols *lib) {
+libpokeapi_kref_redtoss_poke_lib_PokeApi set_up_api(libpokeapi_ExportedSymbols *lib) {
     // Setup Logger
-    lib->kotlin.root.redtoss.poke.lib.Logger.set_loggingFunction(lib->kotlin.root.redtoss.poke.lib.Logger._instance(), logAPI);
+    lib->kotlin.root.redtoss.poke.lib.Logger.set_cLoggingFunction(lib->kotlin.root.redtoss.poke.lib.Logger._instance(),
+                                                                  logAPI);
     // Create API instance
     libpokeapi_kref_redtoss_poke_lib_PokeApi api = lib->kotlin.root.redtoss.poke.lib.PokeApi.PokeApi();
     // Create Handler Instance and set Function
     printf("MAIN\t create CurlExecutor\n");
     libpokeapi_kref_redtoss_poke_lib_CurlExecutor handler = lib->kotlin.root.redtoss.poke.lib.CurlExecutor.CurlExecutor();
-    lib->kotlin.root.redtoss.poke.lib.CurlExecutor.set_function(handler, send_curl_request);
+    lib->kotlin.root.redtoss.poke.lib.CurlExecutor.set_cfunction(handler, send_curl_request);
     // Set Handler to API
     lib->kotlin.root.redtoss.poke.lib.PokeApi.setCurlExecutor(api, handler);
 
     return api;
 }
 
+void * pokemon_result(libpokeapi_kref_redtoss_poke_lib_Pokemon pokemon) {
+    printf("MAIN\t Pokemon: ");
+    // const char *name = lib->kotlin.root.redtoss.poke.lib.Pokemon.toString(pokemon_instance);
+    // printf("%s\n", name);
+}
+
 /**
  * internal method to execute requests
  */
-void *searchForPokemon(libpokeapi_ExportedSymbols *lib, libpokeapi_kref_redtoss_poke_lib_PokeApi api, char *pokemon_name) {
+void *
+searchForPokemon(libpokeapi_ExportedSymbols *lib, libpokeapi_kref_redtoss_poke_lib_PokeApi api, char *pokemon_name) {
     printf("MAIN\t find Pokemon: %s\n", pokemon_name);
-
-    libpokeapi_kref_redtoss_poke_lib_Pokemon pokemon_instance = lib->kotlin.root.redtoss.poke.lib.PokeApi.findPokemon(api, pokemon_name);
-    printf("MAIN\t Pokemon: ");
-    const char *name = lib->kotlin.root.redtoss.poke.lib.Pokemon.toString(pokemon_instance);
-    printf("%s\n", name);
+    libpokeapi_kref_kotlin_Function1 result_function;
+    result_function.pinned = pokemon_result;
+    lib->kotlin.root.redtoss.poke.lib.cFindPokemon(api, pokemon_name, result_function);
 }
 
 

@@ -6,13 +6,21 @@ import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValuesRef
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.invoke
-import kotlinx.cinterop.toKStringFromUtf8
+import kotlinx.cinterop.toKString
 
 actual class CurlExecutor {
-    var function: CPointer<CFunction<(CValuesRef<ByteVar>) -> CPointer<ByteVar>?>>? = null
+    var cfunction: CPointer<CFunction<(CValuesRef<ByteVar>) -> CPointer<ByteVar>?>>? = null
+    var kfunction: (suspend (String) -> String?)? = null
     actual suspend fun invoke(request: String): String? {
-        return function?.invoke(request.cstr)?.toKStringFromUtf8()
-    }
+        return when{
+            cfunction != null ->
+                cfunction?.invoke(request.cstr)?.toKString()
 
+            kfunction != null ->
+                kfunction?.invoke(request)
+
+            else -> null
+        }
+    }
 
 }

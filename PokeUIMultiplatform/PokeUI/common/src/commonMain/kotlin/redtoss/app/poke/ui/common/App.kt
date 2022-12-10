@@ -1,10 +1,12 @@
+@file:OptIn(ExperimentalComposeUiApi::class)
+
 package redtoss.app.poke.ui.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -13,14 +15,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.unit.dp
 import redtoss.poke.lib.CurlExecutor
 import redtoss.poke.lib.PokeApi
 import redtoss.poke.lib.Pokemon
 
-expect fun getCurlExecutor():CurlExecutor
+expect fun getCurlExecutor(): CurlExecutor
 expect fun initPlatform()
+
 @Composable
 fun App() {
     initPlatform()
@@ -30,10 +37,7 @@ fun App() {
     val pokeViewModel = PokeViewModel(pokeApi)
     Column(Modifier.fillMaxWidth()) {
         Searchbar(viewModel = pokeViewModel)
-        Row {
-            PokemonResult(pokeViewModel.latestSearchedPokemon, modifier = Modifier.weight(1f))
-            Spacer(Modifier.weight(1f))
-        }
+        PokemonResult(pokeViewModel.latestSearchedPokemon, modifier = Modifier.weight(1f))
     }
 }
 
@@ -67,23 +71,34 @@ fun PokemonResult(pokemon: MutableState<Pokemon?>, modifier: Modifier? = null) {
 @Composable
 fun Searchbar(viewModel: PokeViewModel) {
     val searchTextField: MutableState<String> = remember { mutableStateOf("") }
+    val search = remember {
+        {
+            searchTextField.value.trim().let { pokemonName ->
+                if (pokemonName.isNotEmpty()) {
+                    viewModel.findPokemon(searchTextField.value.trim())
+                    searchTextField.value = ""
+                }
+            }
+        }
+    }
     Row(Modifier.fillMaxWidth()) {
         TextField(
             value = searchTextField.value,
             onValueChange = { pokemonName ->
                 searchTextField.value = pokemonName
-                if (pokemonName.contains("\n")) {
-                    viewModel.findPokemon(pokemonName.trim())
-                    searchTextField.value = ""
-                }
             },
-            modifier = Modifier.weight(1f)
+            keyboardActions = KeyboardActions { search() },
+            modifier = Modifier.weight(4f).onKeyEvent {
+                if (it.key == Key.Enter) {
+                    search()
+                    true
+                } else {
+                    false
+                }
+            }
         )
         Button(
-            onClick = {
-                viewModel.findPokemon(searchTextField.value)
-                searchTextField.value = ""
-            },
+            onClick = search,
             modifier = Modifier.weight(1f)
         ) { Text("Search") }
     }
