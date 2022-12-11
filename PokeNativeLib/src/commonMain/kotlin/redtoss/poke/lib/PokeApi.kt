@@ -17,7 +17,7 @@ public class PokeApi {
 
     // Making findPokemon a `suspend fun`, gives the callee the force
     // to select the coroutine on which the request should be made.
-    // suspend functions are not compiled for native-Code.
+    // suspend functions are not compiled for cinteropt code!
     public suspend fun findPokemon(name: String): Pokemon? {
         val validName = name.lowercase().replace("/","").replace(".","").replace("*","")
         Logger.d { "findPokemon(): name: '$validName'" }
