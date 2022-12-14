@@ -93,3 +93,22 @@ Thankfully it has complete multiplatform support. :+1:
 
 #### Caching (not yet implemented)
 To enable any user to cache the results of requests, a caching implementation can be passed to the Library.
+
+## Build
+To build the Libraries, gradle is used.
+`./gradlew clean build publishToMavenLocal`
+The libraries are then in the [build/libs](build/libs) and [build/bin/native/](build/bin/native/) folder
+
+| File      | Platform            |
+|-----------|---------------------|
+| PokeNativeLib-1.0-SNAPSHOT.jar | ?                   |
+| PokeNativeLib-jsir-1.0-SNAPSHOT.klib | Kotlin/Native       |
+| PokeNativeLib-jslegacy-1.0-SNAPSHOT.jar | ?                   |
+| PokeNativeLib-jvm-1.0-SNAPSHOT.jar | JVM                 |
+| PokeNativeLib-kotlin-1.0-SNAPSHOT-sources.jar | ?                   |
+| PokeNativeLib-metadata-1.0-SNAPSHOT-all.jar | Libs with common    |
+| PokeNativeLib-native-1.0-SNAPSHOT-metadata.jar | ?                   |
+| libpokeapi.dylib                               | macos native binary |
+| libpokeapi.so                                  | linux native binary |
+
+### Version can be found/set in [gradle file](build.gradle.kts)
