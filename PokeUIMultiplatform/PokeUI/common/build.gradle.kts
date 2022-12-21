@@ -22,6 +22,12 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                // Dependency is not public and needs to be created manually (read by localMaven())
+                // Use ./gradlew publishToMavenLocal in `PokeNativeLib` directory
+                api("redtoss.libraries.native.pokemon:PokeNativeLib:1.0-SNAPSHOT")
+
+                // Logging Library
+                api("org.lighthousegames:logging:1.2.0")
             }
         }
         val commonTest by getting {

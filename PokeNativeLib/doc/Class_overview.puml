@@ -1,0 +1,22 @@
+@startuml
+ class PokeApi{
+    setCurlExecutor(executor: CurlExecutor)
+    findPokemon(name:String)
+}
+
+class Pokemon{
+    name: String
+    height: Int
+    weight: Int
+    types: List<String>
+}
+
+interface Logger{
+    d(log: () -> String)
+}
+
+interface CurlExecutor{
+    invoke(request: String): String?
+}
+
+@enduml

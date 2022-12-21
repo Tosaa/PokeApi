@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+title Component diagram
+
+package redtoss.poke.lib{
+
+package common{
+    class PokeApi{
+    }
+    class Pokemon{
+    }
+
+    interface Logger
+    interface CurlExecutor
+}
+package js{
+    class "CurlExecutor" as js_curl
+    class "Logger" as js_logger
+}
+package jvm{
+    class "CurlExecutor" as jvm_curl
+    class "Logger" as jvm_logger
+}
+package native{
+    class "CurlExecutor" as native_curl
+    class "Logger" as native_logger
+}
+
+js_curl --|> CurlExecutor
+jvm_curl --|> CurlExecutor
+native_curl --|> CurlExecutor
+
+js_logger --|> Logger
+jvm_logger --|> Logger
+native_logger --|> Logger
+
+}
+
+@enduml

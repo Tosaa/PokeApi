@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+box "Platform" #LightGreen
+participant Main
+participant CurlExecutor
+end box
+
+box "Common" #LightBlue
+participant PokeApi
+end box
+
+Main -> CurlExecutor ** : create curl executor function
+Main -> PokeApi ** : create
+Main -> PokeApi : setCurlExecutorFunction(curlExecutor)
+ == Setup complete ==
+
+Main -> PokeApi : findPokemon("pikachu")
+activate PokeApi
+PokeApi -> CurlExecutor : invoke("https://pokeapi.co/api/v2/pokemon/pikachu")
+activate CurlExecutor
+note left: Complete HTTP Request
+CurlExecutor -> PokeApi : Pokemon(Pikachu)
+deactivate CurlExecutor
+PokeApi -> Main : Pokemon(Pikachu)
+deactivate PokeApi
+@enduml

@@ -6,7 +6,13 @@ set(CMAKE_C_STANDARD 99)
 # add_subdirectory(libs)
 add_executable(PokeNativeC src/main.c)
 
-find_library(PokeNativeLibDebugLibrary libpokeapi.so ./libs/native/debugShared)
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    find_library(PokeNativeLibDebugLibrary libpokeapi.dylib ./libs/native/debugShared)
+else()
+    find_library(PokeNativeLibDebugLibrary libpokeapi.so ./libs/native/debugShared)
+endif()
+
 find_path(PokeNativeLibDebugHeader libpokeapi_api.h ./libs/native/debugShared)
 include_directories("${PokeNativeLibDebugHeader}")
 

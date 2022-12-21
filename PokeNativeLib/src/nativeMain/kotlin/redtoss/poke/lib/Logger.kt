@@ -9,11 +9,13 @@ import kotlinx.cinterop.invoke
 
 @ThreadLocal
 actual object Logger {
-    var loggingFunction: CPointer<CFunction<(CValuesRef<ByteVar>) -> Unit>>? = null
+    var cLoggingFunction: CPointer<CFunction<(CValuesRef<ByteVar>) -> Unit>>? = null
+    var kLoggingFunction: ((String) -> Unit)? = null
 
     actual fun d(log: () -> String) {
         val printedLog = log.invoke()
-        loggingFunction?.invoke(printedLog.cstr)
+        cLoggingFunction?.invoke(printedLog.cstr)
+        kLoggingFunction?.invoke(printedLog)
     }
 
 }
