@@ -1,5 +1,8 @@
-# PokeNativeC
-The libs folder is symlinked to the [build/bin/](../PokeNativeLib/build/bin/) folder of the PokeNativeLib module.
+# PokeApplicationC
+_A Command line interface written in C to use the **PokeAPILibrary**._
+
+### folder setup
+The libs folder is symlinked to the [build/bin/](../PokeAPILibrary/build/bin/) folder of the PokeAPILibrary module.
 This is required to receive the .so/.dylib files which are used in the [CMakeList.txt](CMakeLists.txt) file.
 
 Be aware that curl needs to be available on the system.

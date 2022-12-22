@@ -1,41 +1,51 @@
-# PokeLib
-This Project contains a Library, which can be used to access the public API: https://pokeapi.co/  
-The Library is written in `Kotlin` and is compatible to several platforms through `Kotlin Multiplatform`  
-The Library can be found in /PokeNativeLib  
+# PokeApiClient
+This Project contains a Library, which can be used to access the public API: https://pokeapi.co/
 
-**!Notice**: The API is not complete accessible by this library.
+The Library is written in `Kotlin` and is compatible to several platforms through `Kotlin Multiplatform`  
+The Library can be found in [PokeAPILibrary](./PokeAPILibrary)  
+
+**Notice**: The API is not completed yet accessible by this library. This means, not every Request can be made. 
+Actually only `.../v2/pokemon/{name}` request can be made
 
 The Library is used by several applications:
-- PokeNativeC: A Main function written in C, which uses the Library (currently incomplete)
-- PokeKotlinNative: A Main function written in Kotlin/Native, which uses the Library
-- PokeNativeCPP: A Main function written in C++, which uses the Library (not implemented yet)
-- PokeDesktop: A Main function written in Kotlin, which uses the Library
-- PokeAndroid: An Application written in Kotlin, which uses the Library
-- PokeWeb: A Web-application (website) written in Javascript, which uses the Library (not implemented yet)
+- PokeApplicationC: A Main function written in C, which uses the Library (currently incomplete)
+- PokeApplicationKotlinNative: A Main function written in Kotlin/Native, which uses the Library
+- PokeApplicationCpp: A Main function written in C++, which uses the Library (not implemented yet)
+- PokeApplicationDesktop: A Main function written in Kotlin, which uses the Library
+- PokeApplicationAndroid: An Application written in Kotlin, which uses the Library
+- PokeApplicationWeb: A Web-application (website) written in Javascript, which uses the Library (not implemented yet)
 
-## PokeNativeLib
-For details see [PokeNativeLib by Multiplatform](/PokeNativeLib/readme.md).
+## PokeAPILibrary
+_A library that can be used to fetch Information of Pokemon from the public API: https://pokeapi.co/_
+- [Code](./PokeAPILibrary)
+- [readme](./PokeAPILibrary/readme.md)
 
-## PokeNativeC
-_A Main function written in C, which uses the Library._
-- A Logging function is passed to the Library.
-- A Curl function is passed to the Library
+## C-Application
+_A Main function written in C, which provides a CLI to make use of the Library._  
+- [Code](./PokeApplicationC)
+- [readme](./PokeApplicationC/readme.md)
 
-## PokeNativeCPP (not implemented yet)
-_A Main function written in C++, which uses the Library._
-- A Logging function is passed to the Library.
-- A Curl function is passed to the Library
+## Kotlin/Native-Application
+_A Main function written in Kotlin/Native, which provides a CLI to make use of the Library._
+- [Code](./PokeApplicationKotlinNative)
+- [readme](./PokeApplicationKotlinNative/readme.md)
 
-## PokeKotlinNative
-_A Main function written in Kotlin/Native, which uses the Library._
-- A Logging function is passed to the Library.
-- A Curl function is passed to the Library
+## C++-Application (not implemented yet)
+_A Main function written in C++, which provides a CLI to make use of the Library._
+- [Code](./PokeApplicationCpp)
+- [readme](./PokeApplicationCpp/readme.md)
 
-## PokeDesktop & PokeAndroid
- _An App that is written in Kotlin using the Compose Multiplatform framework to provide Desktop App + Android App_
- - Compose-Desktop and Android rely on JVM, so they can share code
- - Compose-Multiplatform contains shared code in its commonMain module which is using the Library
+## Desktop-Application (Kotlin Multiplatform based)
+_An Application that is written in Kotlin using the Compose Multiplatform framework to provide a Desktop App_
+- [Code](./PokeApplicationMultiplatform)
+- [readme](./PokeApplicationMultiplatform/readme.md)
 
-## PokeWeb (not implemented yet)
+## Android-Application (Kotlin Multiplatform based)
+_An Application that is written in Kotlin using the Compose Multiplatform framework to provide an Android App_
+- [Code](./PokeApplicationMultiplatform)
+- [readme](./PokeApplicationMultiplatform/readme.md)
+
+## Web-Application (not implemented yet)
 _A Website, that can be hosted which enables the User to search for Pokemon._
-- T.b.d.
+- [Code](./PokeApplicationWeb)
+- [readme](./PokeApplicationWeb/readme.md)
