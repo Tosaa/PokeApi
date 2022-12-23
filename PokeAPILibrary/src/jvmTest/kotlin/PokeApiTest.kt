@@ -1,20 +1,12 @@
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import redtoss.poke.lib.CurlExecutor
-import redtoss.poke.lib.Logger
-import redtoss.poke.lib.PokeApi
-import kotlin.test.AfterTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import kotlinx.coroutines.runBlocking
+import redtoss.poke.lib.logging.Logger
+import redtoss.poke.lib.PokeApiClient
+import kotlin.test.*
 
 class PokeApiTest {
 
-    init {
-        Logger.loggingFunction = { println("\t$it") }
-    }
+    val logger = Logger()
 
     private fun readDittoJson(): String? {
         return PokeApiTest::class.java.getResource("/ditto.json")?.readText()
@@ -24,44 +16,28 @@ class PokeApiTest {
         return PokeApiTest::class.java.getResource("/pikachu.json")?.readText()
     }
 
-    private val api = PokeApi()
-    private val curlExecutor = object : CurlExecutor() {
-        override suspend fun invoke(request: String): String? {
-            return when {
-                request.contains("ditto") -> readDittoJson()
-                request.contains("pikachu") -> readPikachuJson()
-                else -> {
-                    println("no pokemon in request: $request")
-                    null
-                }
-            }
-        }
-    }
-
-    init {
-        api.setCurlExecutor(curlExecutor)
-    }
-
-
     @Test
-    fun testSetup() {
-        println("Test: testSetup")
-        readDittoJson().let {
-            assertNotNull(it)
-            assertTrue { it.contains("ditto") }
-        }
+    fun testJsonExists() {
+        runBlocking(Dispatchers.IO) {
+            println("Test: testJsonExists")
+            readDittoJson().let {
+                assertNotNull(it)
+                assertTrue { it.contains("ditto") }
+            }
 
-        assertNotNull(readPikachuJson()).let {
-            assertNotNull(it)
-            assertTrue { it.contains("pikachu") }
+            assertNotNull(readPikachuJson()).let {
+                assertNotNull(it)
+                assertTrue { it.contains("pikachu") }
+            }
         }
     }
 
     @Test
     fun testDitto() {
+        val api = PokeApiClient(logger = logger)
         println("Test: testDitto")
         val pokemonName = "ditto"
-        CoroutineScope(Dispatchers.IO).launch {
+        runBlocking(Dispatchers.IO) {
             api.findPokemon(pokemonName).let {
                 assertNotNull(it, "Pokemon should not be 'null'")
                 assertEquals(pokemonName, it.name, "Name is not correct")
@@ -73,10 +49,36 @@ class PokeApiTest {
 
     @Test
     fun testPikachu() {
+        val api = PokeApiClient(logger = logger)
         println("Test: testPikachu")
         val pokemonName = "pikachu"
-        CoroutineScope(Dispatchers.IO).launch {
+        runBlocking(Dispatchers.IO) {
             api.findPokemon(pokemonName).let {
+                assertNotNull(it, "Pokemon should not be 'null'")
+                assertEquals(pokemonName, it.name, "Name is not correct")
+                println(it.toString())
+            }
+        }
+    }
+
+    @Test
+    fun testCache() {
+        val countingCache = TestCustomCache()
+        val api = PokeApiClient(logger = logger, cache = countingCache)
+        println("Test: testCache")
+        val pokemonName = "pikachu"
+        runBlocking(Dispatchers.IO) {
+            assert(countingCache.addPokemonCounter == 0) { "Cache.addPokemon should not have been called yet" }
+            api.findPokemon(pokemonName).let {
+                assert(countingCache.addPokemonCounter == 1) { "Cache.addPokemon should have been called exact once now" }
+                assert(countingCache.getPokemonByURLCounter == 1) { "Cache.getPokemonByURL should have been called exact once now" }
+                assertNotNull(it, "Pokemon should not be 'null'")
+                assertEquals(pokemonName, it.name, "Name is not correct")
+                println(it.toString())
+            }
+            api.findPokemon(pokemonName).let {
+                assert(countingCache.addPokemonCounter == 1) { "Cache.addPokemon should not have been called again" }
+                assert(countingCache.getPokemonByURLCounter == 2) { "Cache.getPokemonByURL should have been called exact twice now" }
                 assertNotNull(it, "Pokemon should not be 'null'")
                 assertEquals(pokemonName, it.name, "Name is not correct")
                 println(it.toString())

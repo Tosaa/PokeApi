@@ -40,41 +40,71 @@ kotlin {
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
 
-    sourceSets.all{
-        languageSettings{
+    sourceSets.all {
+        languageSettings {
             optIn("kotlin.Experimental")
             optIn("kotlin.ExperimentalMultiplatform")
             optIn("kotlin.ExperimentalStdlibApi")
         }
     }
+    val ktorVersion = "2.2.1"
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                val serialization_version = "1.4.0-RC"
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
-                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
             }
         }
-        val jvmMain by getting
-        val jvmTest by getting
-        val jsMain by getting
-        val jsTest by getting
-        val nativeMain by getting
-        val nativeTest by getting
-    }
+        val jvmMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+            }
+        }
+        val jsMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
+            }
+        }
+        val nativeMain by getting {
+            dependencies {
+                // Questionable if those two are required for sharedDebug/sharedRelease native libraries:
+                implementation("io.ktor:ktor-io-macosx64:$ktorVersion")
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
 
+                implementation("io.ktor:ktor-client-curl:$ktorVersion")
+            }
+        }
+        val nativeTest by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-curl:$ktorVersion")
+            }
+        }
+    }
+/*
     nativeTarget.apply {
         binaries {
             sharedLib {
                 baseName = "pokeapi"
             }
         }
-    }
+    }*/
 }

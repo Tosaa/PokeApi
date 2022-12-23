@@ -37,7 +37,7 @@ Steps to use the API:
 
 #### 2. Logging
 Since Logging is very platform dependent, a base Interface can be implemented by the user/platform itself and be injected to the library.  
-The `redtoss.poke.lib.Logger` singleton will use the provided Logging function and logs any information within the Library through it.
+The `redtoss.poke.lib.logging.Logger` singleton will use the provided Logging function and logs any information within the Library through it.
 
 Since the Logger class is a Singleton, realized by kotlins `object declaration`,
 it is enough to set the `Logger.loggingFunction` at start of the runtime.
