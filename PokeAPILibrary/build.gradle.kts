@@ -1,8 +1,8 @@
 import java.awt.GridBagConstraints.BOTH
 
 plugins {
-    kotlin("multiplatform") version "1.7.10"
-    kotlin("plugin.serialization") version "1.7.10"
+    kotlin("multiplatform") version "1.7.20"
+    kotlin("plugin.serialization") version "1.7.20"
     id("maven-publish")
 }
 
@@ -52,8 +52,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
             }
@@ -61,7 +61,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
             }
         }
         val jvmMain by getting {
@@ -86,25 +86,25 @@ kotlin {
         }
         val nativeMain by getting {
             dependencies {
-                // Questionable if those two are required for sharedDebug/sharedRelease native libraries:
-                implementation("io.ktor:ktor-io-macosx64:$ktorVersion")
+                // Darwin is required for .dylib libraries (MacOS)
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
-
+                // Curl is an option for .so libraries (Linux)
                 implementation("io.ktor:ktor-client-curl:$ktorVersion")
             }
         }
         val nativeTest by getting {
             dependencies {
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
                 implementation("io.ktor:ktor-client-curl:$ktorVersion")
             }
         }
     }
-/*
+
     nativeTarget.apply {
         binaries {
             sharedLib {
                 baseName = "pokeapi"
             }
         }
-    }*/
+    }
 }
