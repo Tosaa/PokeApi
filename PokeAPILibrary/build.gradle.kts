@@ -1,5 +1,3 @@
-import java.awt.GridBagConstraints.BOTH
-
 plugins {
     kotlin("multiplatform") version "1.7.20"
     kotlin("plugin.serialization") version "1.7.20"
@@ -7,7 +5,7 @@ plugins {
 }
 
 group = "redtoss.libraries.native.pokemon"
-version = "1.0-SNAPSHOT"
+version = "1.0.0-alpha"
 repositories {
     mavenCentral()
 }
@@ -25,7 +23,9 @@ kotlin {
     js(BOTH) {
         browser {
             commonWebpackConfig {
-                cssSupport.enabled = true
+                cssSupport{
+                    enabled = true
+                }
             }
         }
     }
@@ -48,12 +48,13 @@ kotlin {
         }
     }
     val ktorVersion = "2.2.1"
-
+    val coroutinesCoreVersion = "1.6.4"
+    val serializationJsonVersion = "1.4.1"
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationJsonVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCoreVersion")
 
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
             }
@@ -61,7 +62,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCoreVersion")
             }
         }
         val jvmMain by getting {
