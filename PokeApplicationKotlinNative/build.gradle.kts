@@ -30,9 +30,7 @@ kotlin {
     sourceSets {
         val nativeMain by getting {
             dependencies {
-                api("redtoss.libraries.native.pokemon:PokeNativeLib-native:1.0-SNAPSHOT")
-                implementation("io.ktor:ktor-client-core:2.2.1")
-                implementation("io.ktor:ktor-client-curl:2.2.1")
+                api("redtoss.libraries.native.pokemon:PokeNativeLib-native:1.0.0-alpha")
 
             }
         }
