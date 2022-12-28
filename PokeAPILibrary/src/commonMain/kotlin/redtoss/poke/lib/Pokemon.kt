@@ -18,11 +18,18 @@ public data class Pokemon constructor(
         internal val unknownPokemon = Pokemon(id = -1, name = "UNKNOWN", height = 0, weight = 0)
 
         internal fun byWrapper(wrapper: Wrapper.Pokemon): Pokemon {
-            return Pokemon(wrapper.id, wrapper.name, wrapper.height, wrapper.weight, wrapper.types.map { it.type.name }.toList())
+            return Pokemon(
+                wrapper.id,
+                wrapper.name,
+                wrapper.height,
+                wrapper.weight,
+                wrapper.types.map { it.type.name }.toList()
+            )
         }
 
         internal fun byJson(json: String, logger: Logger? = null): Pokemon {
             val jsonDecoder = Json { ignoreUnknownKeys = true }
+
             return if (json.isNotEmpty()) {
                 return try {
                     val wrappedPokemon = jsonDecoder.decodeFromString<Wrapper.Pokemon>(json)

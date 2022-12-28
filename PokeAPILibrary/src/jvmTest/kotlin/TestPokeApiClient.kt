@@ -1,7 +1,5 @@
-import redtoss.poke.lib.PokeApiClient
 import redtoss.poke.lib.Pokemon
 import redtoss.poke.lib.cache.InMemoryCache
-import redtoss.poke.lib.logging.Logger
 
 internal class TestCustomCache(
     var addPokemonCounter: Int = 0,
