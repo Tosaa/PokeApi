@@ -21,21 +21,20 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.unit.dp
-import redtoss.poke.lib.CurlExecutor
-import redtoss.poke.lib.PokeApi
+import redtoss.poke.lib.PokeApiClient
 import redtoss.poke.lib.Pokemon
 
-expect fun getCurlExecutor(): CurlExecutor
+
 expect fun initPlatform()
 
 @Composable
 fun App() {
     initPlatform()
-    val pokeApi = PokeApi()
-    val curlExecutor = getCurlExecutor()
-    pokeApi.setCurlExecutor(curlExecutor)
-    val pokeViewModel = PokeViewModel(pokeApi)
+    val logger = remember { PlatformLogger() }
+    val pokeApi = remember { PokeApiClient(logger = logger) }
+    val pokeViewModel = remember { PokeViewModel(pokeApi) }
     Column(Modifier.fillMaxWidth()) {
+        Text("Pokemon Search")
         Searchbar(viewModel = pokeViewModel)
         PokemonResult(pokeViewModel.latestSearchedPokemon, modifier = Modifier.weight(1f))
     }

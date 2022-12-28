@@ -13,15 +13,15 @@ repositories {
 
 dependencies {
     implementation(project(":common"))
-    implementation("androidx.activity:activity-compose:1.5.1")
+    implementation("androidx.activity:activity-compose:1.6.1")
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdkVersion(33)
     defaultConfig {
         applicationId = "redtoss.app.poke.ui.android"
-        minSdkVersion(24)
-        targetSdkVersion(31)
+        minSdkVersion(33)
+        targetSdkVersion(33)
         versionCode = 1
         versionName = "1.0-SNAPSHOT"
     }

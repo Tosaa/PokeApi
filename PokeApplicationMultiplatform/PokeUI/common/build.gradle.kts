@@ -24,7 +24,7 @@ kotlin {
                 api(compose.material)
                 // Dependency is not public and needs to be created manually (read by localMaven())
                 // Use ./gradlew publishToMavenLocal in `PokeNativeLib` directory
-                api("redtoss.libraries.native.pokemon:PokeNativeLib:1.0-SNAPSHOT")
+                implementation("redtoss.libraries.native.pokemon:PokeNativeLib:1.0.0-alpha")
 
                 // Logging Library
                 api("org.lighthousegames:logging:1.2.0")
@@ -37,18 +37,19 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.2.0")
-                api("androidx.core:core-ktx:1.3.1")
+                api("androidx.appcompat:appcompat:1.5.1")
+                api("androidx.core:core-ktx:1.9.0")
             }
         }
         val androidTest by getting {
             dependencies {
-                implementation("junit:junit:4.13")
+                implementation("junit:junit:4.13.2")
             }
         }
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
             }
         }
         val desktopTest by getting
@@ -56,11 +57,11 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdkVersion(33)
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(31)
+        minSdkVersion(33)
+        targetSdkVersion(33)
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

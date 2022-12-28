@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import redtoss.poke.lib.PokeApi
+import redtoss.poke.lib.PokeApiClient
 import redtoss.poke.lib.Pokemon
 
-class PokeViewModel(val pokeApi: PokeApi) {
+class PokeViewModel(val pokeApi: PokeApiClient) {
      val latestSearchedPokemon: MutableState<Pokemon?> = mutableStateOf(null)
      val coroutineScope = CoroutineScope(Dispatchers.Default)
 
