@@ -12,3 +12,8 @@ fun PokeApiClient.findPokemonOnCurrentThread(name: String, onResult: PokemonResu
         onResult.invoke(findPokemon(name))
     }
 }
+
+// Utility function to call findPokemon from C, but without invoking any function afterwards
+fun PokeApiClient.findPokemonOnCurrentThread(name: String) = findPokemonOnCurrentThread(name) { _ -> }
+
+fun createDefaultPokeApiClient(): PokeApiClient = PokeApiClient()

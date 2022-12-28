@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform") version "1.7.20"
-    kotlin("plugin.serialization") version "1.7.20"
+    kotlin("multiplatform") version "1.7.21"
+    kotlin("plugin.serialization") version "1.7.21"
     id("maven-publish")
 }
 
@@ -23,7 +23,7 @@ kotlin {
     js(BOTH) {
         browser {
             commonWebpackConfig {
-                cssSupport{
+                cssSupport {
                     enabled = true
                 }
             }
@@ -33,9 +33,11 @@ kotlin {
 
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
+    val isMacOS = hostOs == "Mac OS X"
+    val isLinux = hostOs == "Linux"
     val nativeTarget = when {
-        hostOs == "Mac OS X" -> macosX64("native")
-        hostOs == "Linux" -> linuxX64("native")
+        isMacOS -> macosX64("native")
+        isLinux -> linuxX64("native")
         isMingwX64 -> mingwX64("native")
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
@@ -87,16 +89,44 @@ kotlin {
         }
         val nativeMain by getting {
             dependencies {
-                // Darwin is required for .dylib libraries (MacOS)
-                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
-                // Curl is an option for .so libraries (Linux)
-                implementation("io.ktor:ktor-client-curl:$ktorVersion")
+                when {
+                    isMacOS -> {
+                        // Darwin is required for .dylib libraries (MacOS)
+                        implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+                    }
+
+                    isLinux -> {
+                        // Curl is an option for .so libraries (Linux)
+                        implementation("io.ktor:ktor-client-curl:$ktorVersion")
+                    }
+
+                    isMingwX64 -> {
+
+                    }
+
+                    else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+                }
             }
         }
         val nativeTest by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
-                implementation("io.ktor:ktor-client-curl:$ktorVersion")
+                when {
+                    isMacOS -> {
+                        // Darwin is required for .dylib libraries (MacOS)
+                        implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+                    }
+
+                    isLinux -> {
+                        // Curl is an option for .so libraries (Linux)
+                        implementation("io.ktor:ktor-client-curl:$ktorVersion")
+                    }
+
+                    isMingwX64 -> {
+
+                    }
+
+                    else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+                }
             }
         }
     }
